@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Asistencias</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 pb-10">
+
+    <div class="bg-indigo-700 p-4 shadow-md sticky top-0 z-10 flex items-center">
+        <a href="{% url 'dashboard' %}" class="text-white mr-4 text-xl hover:text-gray-300 transition">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <h1 class="text-white text-lg font-bold">Historial de Clases</h1>
+    </div>
+
+    <div class="p-4 max-w-md mx-auto">
+        
+        <form method="GET" class="bg-white p-4 rounded-lg shadow mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2">Selecciona una fecha:</label>
+            <div class="flex gap-2">
+                <input type="date" name="fecha" value="{{ fecha_seleccionada }}" 
+                       class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded font-bold hover:bg-indigo-700 transition">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </form>
+
+        {% if fecha_seleccionada %}
+            <h2 class="text-gray-600 mb-2 font-bold uppercase text-sm">
+                Asistencias del {{ fecha_seleccionada }}
+            </h2>
+
+            {% if asistencias %}
+                <div class="space-y-3">
+                    {% for item in asistencias %}
+                    <div class="bg-white p-3 rounded-l border-l-4 
+                                {% if item.profesor %} border-purple-500 {% else %} border-green-500 {% endif %} 
+                                shadow flex justify-between items-center hover:bg-gray-50 transition">
+                        
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <p class="font-bold text-gray-800">
+                                    {% if item.profesor %}
+                                        {{ item.profesor.nombre }}
+                                    {% else %}
+                                        {{ item.estudiante.nombre }}
+                                    {% endif %}
+                                </p>
+                                
+                                <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-200">
+                                    {{ item.materia.nombre }}
+                                </span>
+                            </div>
+
+                            <p class="text-gray-500 text-xs mt-1">
+                                <i class="far fa-id-card"></i> 
+                                {% if item.profesor %}
+                                    {{ item.profesor.rfid_uid }}
+                                {% else %}
+                                    {{ item.estudiante.rfid_uid }}
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        <div class="text-right">
+                            {% if item.profesor %}
+                                <span class="bg-purple-100 text-purple-800 text-xs font-bold px-2 py-1 rounded">PROFESOR</span>
+                            {% else %}
+                                <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">Alumno</span>
+                            {% endif %}
+                            
+                            <p class="text-gray-400 text-xs mt-1">
+                                <i class="far fa-clock"></i> {{ item.hora_llegada|date:"h:i A" }}
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center p-8 bg-white rounded shadow">
+                    <i class="fas fa-ghost text-gray-300 text-4xl mb-2"></i>
+                    <p class="text-gray-500">No hubo clases registradas en esta fecha.</p>
+                </div>
+            {% endif %}
+        
+        {% else %}
+            <div class="text-center text-gray-400 mt-10">
+                <i class="fas fa-calendar-day text-5xl mb-3"></i>
+                <p>Selecciona una fecha para ver el reporte.</p>
+            </div>
+        {% endif %}
+
+    </div>
+</body>
+</html>

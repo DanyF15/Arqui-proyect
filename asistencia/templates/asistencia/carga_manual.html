@@ -1,0 +1,17 @@
+<div class="p-8 max-w-md mx-auto bg-white rounded shadow">
+    <h2 class="text-xl font-bold mb-4">Carga Masiva (Respaldo SD)</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label class="block mb-2 text-sm text-gray-700">Sube el archivo .txt de la SD:</label>
+        <input type="file" name="archivo_sd" accept=".txt,.csv" required
+               class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
+        
+        <button type="submit" class="mt-4 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+            Procesar Archivo
+        </button>
+    </form>
+    
+    {% if mensaje %}
+        <div class="mt-4 p-3 bg-green-100 text-green-700 rounded">{{ mensaje }}</div>
+    {% endif %}
+</div>

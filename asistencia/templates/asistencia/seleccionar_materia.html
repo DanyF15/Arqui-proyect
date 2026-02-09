@@ -1,0 +1,13 @@
+<h1>Hola, {{ user.username }}</h1>
+<h2>¿Qué clase vas a impartir hoy?</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="grid">
+        {% for materia in materias %}
+        <button type="submit" name="materia_id" value="{{ materia.id }}" class="btn-azul">
+            {{ materia.nombre }} <br> <small>{{ materia.codigo }}</small>
+        </button>
+        {% endfor %}
+    </div>
+</form>
