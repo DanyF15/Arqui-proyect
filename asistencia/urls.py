@@ -20,4 +20,5 @@ urlpatterns = [
     path('api/rfid/', views.recibir_rfid, name='api_rfid'),
     path('api/get-uid/', views.obtener_uid_temporal, name='get_uid'),
     path('api/guardar-estudiante/', views.guardar_nuevo_estudiante, name='guardar_estudiante'),
+    
 ]
