@@ -1,13 +1,74 @@
-<h1>Hola, {{ user.username }}</h1>
-<h2>¿Qué clase vas a impartir hoy?</h2>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar Materia - Asistencia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
 
-<form method="post">
-    {% csrf_token %}
-    <div class="grid">
-        {% for materia in materias %}
-        <button type="submit" name="materia_id" value="{{ materia.id }}" class="btn-azul">
-            {{ materia.nombre }} <br> <small>{{ materia.codigo }}</small>
-        </button>
-        {% endfor %}
+    <div class="bg-blue-600 p-6 shadow-lg">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-white text-2xl font-bold">¡Hola, {{ user.username }}!</h1>
+                <p class="text-blue-100 text-sm mt-1">
+                    <i class="fas fa-calendar-day"></i> 
+                    ¿Qué clase vas a impartir hoy?
+                </p>
+            </div>
+            <div class="bg-blue-500 p-3 rounded-full text-white shadow-inner">
+                <i class="fas fa-user-tie text-2xl"></i>
+            </div>
+        </div>
     </div>
-</form>
+
+    <div class="p-6 max-w-4xl mx-auto">
+        
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {% for materia in materias %}
+                <button type="submit" name="materia_id" value="{{ materia.id }}" 
+                        class="group bg-white p-6 rounded-lg shadow-sm border-l-4 border-blue-500 
+                               flex justify-between items-center hover:bg-blue-50 transition-all duration-200 text-left">
+                    
+                    <div class="flex items-center gap-4">
+                        <div class="bg-blue-100 p-3 rounded-lg group-hover:bg-blue-600 transition-colors">
+                            <i class="fas fa-book text-blue-600 group-hover:text-white"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800 text-lg leading-tight">
+                                {{ materia.nombre }}
+                            </p>
+                            <p class="text-gray-400 text-sm font-mono mt-1">
+                                {{ materia.codigo }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <i class="fas fa-chevron-right text-xl"></i>
+                    </div>
+                </button>
+                {% empty %}
+                <div class="col-span-full text-center py-12 text-gray-400">
+                    <i class="fas fa-exclamation-circle text-4xl mb-2"></i>
+                    <p>No tienes materias asignadas todavía.</p>
+                </div>
+                {% endfor %}
+            </div>
+
+        </form>
+
+        <div class="mt-8 text-center">
+            <a href="{% url 'logout' %}" class="text-gray-500 hover:text-red-500 text-sm font-medium transition-colors">
+                <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
